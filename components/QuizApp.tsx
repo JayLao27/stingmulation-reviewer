@@ -181,9 +181,9 @@ export default function QuizApp() {
   return (
     <main className="app-shell">
       <header className="header">
-        <div className="tag">University of Mindanao - CASE</div>
+        <div className="tag">Stingmulation Exam</div>
         <h1 className="title">
-          Simulation Systems
+          Stingimulation Systems
           <br />
           1st Examination
         </h1>
