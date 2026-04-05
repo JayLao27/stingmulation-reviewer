@@ -1,5 +1,5 @@
-import QuizApp from "../components/QuizApp";
+import App from "../components/ui/App";
 
 export default function Page() {
-  return <QuizApp />;
+  return <App />;
 }
