@@ -96,6 +96,7 @@ export default function App() {
   );
   const [mode, setMode] = useState<Mode>("quiz");
   const [filter, setFilter] = useState<Filter>("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [displayOrder, setDisplayOrder] = useState<Question[]>(() => [...activeExam.questions]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [resultsOpen, setResultsOpen] = useState(false);
@@ -110,6 +111,7 @@ export default function App() {
     setDisplayOrder(prepareQuestions(activeExam.questions));
     setMode("quiz");
     setFilter("all");
+    setSearchQuery("");
     setCurrentQuestionIndex(0);
     setResultsOpen(false);
   }, [activeExam]);
@@ -141,9 +143,17 @@ export default function App() {
 
   const visibleQuestions = useMemo(() => {
     let questions = displayOrder;
+    const normalizedQuery = searchQuery.trim().toLowerCase();
 
     if (filter !== "all") {
       questions = questions.filter((question) => question.topic === filter);
+    }
+
+    if (normalizedQuery) {
+      questions = questions.filter((question) => {
+        const haystack = `${question.text} ${question.topic} ${question.options.join(" ")}`.toLowerCase();
+        return haystack.includes(normalizedQuery);
+      });
     }
 
     if (mode === "missed") {
@@ -151,7 +161,7 @@ export default function App() {
     }
 
     return questions;
-  }, [displayOrder, filter, mode, state]);
+  }, [displayOrder, filter, mode, searchQuery, state]);
 
   useEffect(() => {
     setCurrentQuestionIndex((current) => {
@@ -195,6 +205,7 @@ export default function App() {
     setDisplayOrder(prepareQuestions(activeExam.questions));
     setMode("quiz");
     setFilter("all");
+    setSearchQuery("");
     setCurrentQuestionIndex(0);
     setResultsOpen(false);
   }
@@ -304,6 +315,30 @@ export default function App() {
             {topic}
           </button>
         ))}
+      </section>
+
+      <section className="search-bar" aria-label="Question search">
+        <input
+          type="search"
+          className="search-input"
+          placeholder="Search questions, topics, or options"
+          value={searchQuery}
+          onChange={(event) => {
+            setSearchQuery(event.target.value);
+            setCurrentQuestionIndex(0);
+          }}
+        />
+        <button
+          type="button"
+          className="filter-btn"
+          onClick={() => {
+            setSearchQuery("");
+            setCurrentQuestionIndex(0);
+          }}
+          disabled={searchQuery.trim().length === 0}
+        >
+          Clear
+        </button>
       </section>
 
       <section className="question-list" aria-live="polite">
