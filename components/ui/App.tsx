@@ -55,6 +55,7 @@ function shuffleQuestions(list: Question[]) {
   }
 
   return items;
+
 }
 
 function shuffleQuestionOptions(question: Question): Question {
@@ -196,6 +197,11 @@ export default function App() {
     setFilter("all");
     setCurrentQuestionIndex(0);
     setResultsOpen(false);
+  }
+
+  function handleShuffle() {
+    setDisplayOrder(shuffleQuestions(activeExam.questions));
+    setCurrentQuestionIndex(0);
   }
 
   return (
@@ -396,6 +402,9 @@ export default function App() {
       <section className="controls">
         <button type="button" className="btn" onClick={resetAll}>
           Reset All
+        </button>
+        <button type="button" className="btn" onClick={handleShuffle}>
+          Shuffle
         </button>
         <button type="button" className="btn primary" onClick={() => setResultsOpen(true)}>
           View Results
