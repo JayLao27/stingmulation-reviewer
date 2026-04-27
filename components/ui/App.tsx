@@ -83,9 +83,9 @@ function prepareQuestions(list: Question[]) {
 }
 
 export default function App() {
-  const [activeExamId, setActiveExamId] = useState(QUIZ_SETS[0]?.id ?? "exam1");
+  const [activeExamId, setActiveExamId] = useState(QUIZ_SETS[2]?.id ?? "exam1");
   const activeExam = useMemo(
-    () => QUIZ_SETS.find((exam) => exam.id === activeExamId) ?? QUIZ_SETS[0],
+    () => QUIZ_SETS.find((exam) => exam.id === activeExamId) ?? QUIZ_SETS[2],
     [activeExamId],
   );
 
